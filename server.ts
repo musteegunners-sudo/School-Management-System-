@@ -5,6 +5,7 @@ import { execSync } from 'child_process';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
 import { createServer as createViteServer } from 'vite';
+import apiRouter from './src/server/routes';
 
 dotenv.config();
 
@@ -51,7 +52,7 @@ function generateFallbackRemarks(data: GenerateCommentPayload) {
   if (total >= 70 || grade === 'A') {
     summaryAssessment = 'Distinction with High Commendation';
     conciseRemark = `Outstanding academic performance! ${firstName} demonstrates exceptional mastery and disciplined commitment to studies.`;
-    detailedRemark = `${firstName} has shown remarkable diligence throughout the term, maintaining strong weekly unit assignment submissions (${data.unitAssignmentTotal || 40}/48) and achieving an excellent terminal score of ${total}%. ${pronoun} attended ${attRate}% of school sessions with exemplary punctuality.`;
+    detailedRemark = `${firstName} has shown remarkable diligence throughout the term, maintaining strong weekly unit assignment submissions (${data.unitAssignmentTotal || 40}/48) and achieving an exceptional academic profile. With a total score of ${total}% and exemplary focus, ${firstName} continues to set a very high standard for excellence.`;
     islamicCharacterRemark = `A shining example of good character (Adab) and academic excellence. May Allah continue to grant ${firstName} beneficial knowledge, wisdom, and steadfastness in good deeds.`;
     keyStrengths.push('Exceptional mastery of curriculum concepts', 'Consistent high scores in weekly continuous assignments');
     if (attRate >= 85) keyStrengths.push('Excellent attendance and punctuality');
@@ -59,7 +60,7 @@ function generateFallbackRemarks(data: GenerateCommentPayload) {
   } else if (total >= 60 || grade === 'B') {
     summaryAssessment = 'Very Good with Steady Diligence';
     conciseRemark = `A dedicated and capable student. ${firstName} consistently completes assignments and exhibits commendable progress.`;
-    detailedRemark = `${firstName} has achieved a solid total score of ${total}% with commendable engagement in weekly lessons. With an attendance rate of ${attRate}%, ${possessive} consistent presence has supported steady academic development.`;
+    detailedRemark = `${firstName} has achieved a solid total score of ${total}% with commendable engagement in weekly lessons. With an attendance rate of ${attRate}%, ${possessive} consistent presence and commitment are encouraging, and continued revision will help ${firstName} reach even higher academic heights.`;
     islamicCharacterRemark = `${firstName} exhibits polite conduct and respect for teachers. We pray Allah blesses ${possessive} efforts and guides ${firstName} toward even greater heights next term.`;
     keyStrengths.push('Solid grasp of foundational subject topics', 'Active participation in weekly lessons');
     if (attRate >= 75) keyStrengths.push('Consistent school attendance');
@@ -67,21 +68,21 @@ function generateFallbackRemarks(data: GenerateCommentPayload) {
   } else if (total >= 50 || grade === 'C') {
     summaryAssessment = 'Good Effort with Room for Growth';
     conciseRemark = `Shows good potential and enthusiasm. Regular revision will help ${firstName} achieve higher grades.`;
-    detailedRemark = `${firstName} completed the term with an overall mark of ${total}%. While understanding is satisfactory, greater consistency in completing weekly unit assignments and focused exam preparation will elevate ${possessive} standing. Attendance stood at ${attRate}%.`;
+    detailedRemark = `${firstName} completed the term with an overall mark of ${total}%. While understanding is satisfactory, greater consistency in completing weekly unit assignments and focused review of weak areas will improve performance significantly. Attendance remains a supportive factor for steady academic progression.`;
     islamicCharacterRemark = `Demonstrates respectful conduct in class. Continued patience (Sabr) and perseverance in studies will unlock ${possessive} full potential, insha'Allah.`;
     keyStrengths.push('Satisfactory class participation', 'Willingness to learn and improve');
     areasForImprovement.push('More consistent revision of weekly unit topics', 'Enhanced focus on terminal examination preparation');
   } else if (total >= 45 || grade === 'D') {
     summaryAssessment = 'Fair Performance / Needs Extra Effort';
     conciseRemark = `Satisfactory effort, but requires closer revision and active participation in class.`;
-    detailedRemark = `${firstName} attained a pass grade of ${total}%. ${pronoun} needs to dedicate more hours to independent study and ensure all weekly assignments are submitted punctually. Attendance recorded was ${attRate}%.`;
+    detailedRemark = `${firstName} attained a pass grade of ${total}%. ${pronoun} needs to dedicate more hours to independent study and ensure all weekly assignments are submitted punctually. Attendance and classroom focus require stronger consistency for better outcomes in future terms.`;
     islamicCharacterRemark = `Encouraged to strengthen discipline and seek assistance whenever topics feel challenging. Consistent prayer and study habits will yield better outcomes.`;
     keyStrengths.push('Passes foundational requirements');
     areasForImprovement.push('Needs systematic daily revision', 'Timely completion of homework and unit assignments');
   } else {
     summaryAssessment = 'Needs Urgent Attention and Support';
     conciseRemark = `Performance requires urgent intervention. Dedicated home revision and remedial support are strongly recommended.`;
-    detailedRemark = `${firstName} scored ${total}% this term. ${pronoun} struggled with key subject concepts and would benefit immensely from extra tutoring and stricter adherence to study schedules. Regular attendance (${attRate}%) must be improved.`;
+    detailedRemark = `${firstName} scored ${total}% this term. ${pronoun} struggled with key subject concepts and would benefit immensely from extra tutoring and stricter adherence to study schedules. Attendance and assignment consistency should be improved in the next cycle to secure academic stability.`;
     islamicCharacterRemark = `We encourage ${firstName} to renew determination and seek guidance from teachers. With concerted effort and parental partnership, improvement is certainly achievable.`;
     keyStrengths.push('Shows room for substantial turnaround with guided mentoring');
     areasForImprovement.push('Requires close monitoring by parents and teachers', 'Mandatory participation in remedial study classes');
@@ -91,7 +92,7 @@ function generateFallbackRemarks(data: GenerateCommentPayload) {
     attRate >= 90
       ? `Exemplary attendance record (${attRate}% present), demonstrating high commitment.`
       : attRate >= 75
-      ? `Good regular attendance (${attRate}% present) throughout the 12-week academic term.`
+      ? `Good regular attendance (${attRate}% present) throughout the academic term.`
       : `Attendance is below recommended threshold (${attRate}% present); regular presence is vital for academic progress.`;
 
   return {
@@ -109,6 +110,7 @@ async function startServer() {
   const app = express();
 
   app.use(express.json());
+  app.use('/api', apiRouter);
 
   // Health endpoint
   app.get('/api/health', (req: Request, res: Response) => {
@@ -146,7 +148,6 @@ async function startServer() {
     const gemini = getGeminiClient();
 
     if (!gemini) {
-      // API Key is not set yet in environment: return smart rule-based comments seamlessly
       return res.json({
         success: true,
         aiPowered: false,
@@ -211,7 +212,6 @@ Format example:
       });
 
       const responseText = response.text || '';
-      // Clean potential markdown wrap ```json ... ```
       const cleanedText = responseText.replace(/```(?:json)?/gi, '').replace(/```/g, '').trim();
 
       try {
@@ -245,7 +245,6 @@ Format example:
       }
     } catch (apiError: any) {
       console.error('Gemini API call error:', apiError);
-      // Seamlessly fall back to context-rich rule engine so teacher experience is never halted
       return res.json({
         success: true,
         aiPowered: false,
@@ -262,7 +261,6 @@ Format example:
       const publicZipPath = path.join(process.cwd(), 'public', 'kulliyyat-tatbiq-complete-system.zip');
       const rootZipPath = path.join(process.cwd(), 'kulliyyat-tatbiq-complete-system.zip');
 
-      // If neither exists or is older than 5 minutes, regenerate using python3
       if (!fs.existsSync(publicZipPath) && !fs.existsSync(rootZipPath)) {
         try {
           execSync('python3 scripts/generate_zip.py', { cwd: process.cwd() });
