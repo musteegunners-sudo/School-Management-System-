@@ -1,0 +1,248 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brown-50: #fbf7f4;
+  --color-brown-100: #f4ecdf;
+  --color-brown-200: #ebd6c6;
+  --color-brown-300: #debca3;
+  --color-brown-400: #cc9b75;
+  --color-brown-500: #b87c4f;
+  --color-brown-600: #9c6038;
+  --color-brown-700: #7d4829;
+  --color-brown-800: #5f341b;
+  --color-brown-900: #3e2213;
+  --color-brown-950: #241208;
+
+  --color-emerald-50: #fcf9f6;
+  --color-emerald-100: #f5ece2;
+  --color-emerald-200: #e8d7c6;
+  --color-emerald-300: #d7bba4;
+  --color-emerald-400: #c19777;
+  --color-emerald-500: #a47551;
+  --color-emerald-600: #875736;
+  --color-emerald-700: #694024;
+  --color-emerald-800: #4e2d17;
+  --color-emerald-900: #351c0d;
+  --color-emerald-950: #1f0f06;
+
+  --color-teal-50: #fcf9f6;
+  --color-teal-100: #f5ece2;
+  --color-teal-200: #e8d7c6;
+  --color-teal-300: #d7bba4;
+  --color-teal-400: #c19777;
+  --color-teal-500: #a47551;
+  --color-teal-600: #875736;
+  --color-teal-700: #694024;
+  --color-teal-800: #4e2d17;
+  --color-teal-900: #351c0d;
+  --color-teal-950: #1f0f06;
+}
+
+@layer utilities {
+  .font-arabic {
+    font-family: 'Amiri', 'Traditional Arabic', 'Scheherazade New', 'Noto Naskh Arabic', 'Segoe UI', Tahoma, sans-serif;
+  }
+}
+
+/* ==========================================================================
+   OFFICIAL PRINT STYLESHEET
+   Optimized for Academic Report Cards, Fee Receipts, and Class Rosters
+   ========================================================================== */
+@media print {
+  /* Standard A4 Paper Setup with Clean Margins */
+  @page {
+    size: A4 portrait;
+    margin: 8mm 10mm 8mm 10mm;
+  }
+
+  /* Force exact background colors, borders, and graphics in all modern browsers */
+  html,
+  body,
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 11pt;
+    line-height: 1.35;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Global Suppression: Remove interactive controls, navigation, and web chrome */
+  header,
+  nav,
+  footer,
+  aside,
+  button,
+  input,
+  select,
+  textarea,
+  [role="tablist"],
+  [data-no-print],
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Reset main app wrappers to prevent margin clipping or unexpected scroll bars */
+  #root,
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+
+  /* Prevent awkward page breaks */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  td,
+  th {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  thead {
+    display: table-header-group !important;
+  }
+
+  tfoot {
+    display: table-footer-group !important;
+  }
+
+  .break-inside-avoid,
+  .print-avoid-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     1. OFFICIAL ACADEMIC REPORT CARDS (#official-report-card)
+     -------------------------------------------------------------------------- */
+  #official-report-card {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    background: #ffffff !important;
+    page-break-inside: auto;
+  }
+
+  #official-report-card table {
+    font-size: 8.5pt !important;
+  }
+
+  #official-report-card th,
+  #official-report-card td {
+    border-color: #cbd5e1 !important;
+  }
+
+  #official-report-card img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     2. OFFICIAL FEE RECEIPTS (#official-receipt-modal & #official-fee-receipt)
+     -------------------------------------------------------------------------- */
+  #official-receipt-modal {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  #official-receipt-modal > div {
+    position: static !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border: 1.5px solid #0f172a !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  #official-fee-receipt {
+    padding: 10mm 12mm !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  /* Hide underlying main content when printing official receipt modal */
+  body:has(#official-receipt-modal) main {
+    display: none !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     3. OFFICIAL CLASS ROSTERS & REGISTERS (#official-class-roster)
+     -------------------------------------------------------------------------- */
+  #official-class-roster {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  #official-class-roster .overflow-x-auto {
+    overflow: visible !important;
+  }
+
+  #official-class-roster table {
+    min-width: 100% !important;
+    width: 100% !important;
+    font-size: 8.5pt !important;
+    border: 1px solid #94a3b8 !important;
+  }
+
+  #official-class-roster th,
+  #official-class-roster td {
+    border: 1px solid #cbd5e1 !important;
+    padding: 4px 6px !important;
+  }
+
+  #official-class-roster th {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     4. FINANCIAL AUDIT STATEMENTS (#official-financial-statement)
+     -------------------------------------------------------------------------- */
+  #official-financial-statement {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+}
+

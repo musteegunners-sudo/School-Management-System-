@@ -1,0 +1,164 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "KulliyyatSchoolSystemDatabaseBlueprint",
+  "description": "Centralized database schema for Kulliyyat Tatbiq at-Ta'alim al-Islamiyyah school information system",
+  "entities": {
+    "teachers": {
+      "title": "Teachers",
+      "description": "Registered faculty and class form teachers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "staffId": { "type": "string" },
+        "fullName": { "type": "string" },
+        "arabicName": { "type": "string" },
+        "gender": { "type": "string", "enum": ["Male", "Female"] },
+        "qualification": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "assignedClassId": { "type": "string" },
+        "assignedSubjectIds": { "type": "array", "items": { "type": "string" } },
+        "status": { "type": "string", "enum": ["Active", "On Leave", "Inactive"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "staffId", "fullName", "gender", "qualification", "phone", "status"]
+    },
+    "students": {
+      "title": "Students",
+      "description": "Registered students enrolled in Kulliyyat",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "regNo": { "type": "string" },
+        "fullName": { "type": "string" },
+        "arabicName": { "type": "string" },
+        "gender": { "type": "string", "enum": ["Male", "Female"] },
+        "dob": { "type": "string" },
+        "classId": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "guardianName": { "type": "string" },
+        "guardianPhone": { "type": "string" },
+        "address": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "regNo", "fullName", "gender", "classId"]
+    },
+    "classes": {
+      "title": "SchoolClasses",
+      "description": "Academic classes and assigned form teachers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "section": { "type": "string" },
+        "classTeacher": { "type": "string" },
+        "assignedTeacherId": { "type": "string" }
+      },
+      "required": ["id", "name", "category", "section"]
+    },
+    "subjects": {
+      "title": "Subjects",
+      "description": "Curriculum subjects taught in the institution",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "arabicName": { "type": "string" },
+        "code": { "type": "string" },
+        "category": { "type": "string" }
+      },
+      "required": ["id", "name", "code", "category"]
+    },
+    "scores": {
+      "title": "ScoreRecords",
+      "description": "Student assessment grades including 12-week unit assignments, CA1, CA2, Exam, and total",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "classId": { "type": "string" },
+        "sessionId": { "type": "string" },
+        "termId": { "type": "string" },
+        "weeklyAssignments": { "type": "array", "items": { "type": "number" } },
+        "unitAssignmentTotal": { "type": "number" },
+        "ca1": { "type": "number" },
+        "ca2": { "type": "number" },
+        "exam": { "type": "number" },
+        "total": { "type": "number" },
+        "grade": { "type": "string" },
+        "remark": { "type": "string" }
+      },
+      "required": ["id", "studentId", "subjectId", "classId", "sessionId", "termId", "total", "grade"]
+    },
+    "attendance": {
+      "title": "AttendanceRecords",
+      "description": "Attendance tracking per student per term",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "classId": { "type": "string" },
+        "sessionId": { "type": "string" },
+        "termId": { "type": "string" },
+        "timesOpened": { "type": "number" },
+        "timesPresent": { "type": "number" },
+        "timesAbsent": { "type": "number" }
+      },
+      "required": ["id", "studentId", "classId", "sessionId", "termId"]
+    },
+    "schoolProfile": {
+      "title": "SchoolProfile",
+      "description": "Official institution identity and metadata",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "arabicName": { "type": "string" },
+        "motto": { "type": "string" },
+        "arabicMotto": { "type": "string" },
+        "address": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "nextTermBegins": { "type": "string" },
+        "mudirName": { "type": "string" }
+      }
+    },
+    "auditLogs": {
+      "title": "AuditLogs",
+      "description": "Central audit trail for database modifications",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "action": { "type": "string" },
+        "details": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "actor": { "type": "string" }
+      }
+    },
+    "behavioralNotes": {
+      "title": "BehavioralNotes",
+      "description": "Confidential behavioral observations and character evaluations recorded by faculty and admin",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorRole": { "type": "string", "enum": ["teacher", "super_admin"] },
+        "category": { "type": "string" },
+        "type": { "type": "string", "enum": ["positive", "constructive"] },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "actionTaken": { "type": "string" },
+        "sessionId": { "type": "string" },
+        "termId": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "isPrivate": { "type": "boolean" }
+      },
+      "required": ["id", "studentId", "authorId", "authorName", "authorRole", "category", "type", "title", "content", "createdAt", "isPrivate"]
+    }
+  }
+}

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" />
+      <stop offset="50%" stop-color="#065f46" />
+      <stop offset="100%" stop-color="#022c22" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#065f46" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background with subtle corner radius -->
+  <rect width="512" height="512" rx="108" fill="url(#bgGrad)" />
+  
+  <!-- Subtle inner radial glow -->
+  <circle cx="256" cy="256" r="230" fill="url(#glowGrad)" />
+
+  <!-- Outer Islamic geometric ring border -->
+  <circle cx="256" cy="256" r="216" fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-opacity="0.6" stroke-dasharray="8 6" />
+  <circle cx="256" cy="256" r="206" fill="none" stroke="#6ee7b7" stroke-width="1.5" stroke-opacity="0.5" />
+
+  <!-- Central Crest: Mihrab arch & open book & crescent -->
+  <g transform="translate(256, 230)">
+    <!-- Crescent & Star -->
+    <path d="M 0,-100 A 30,30 0 1,1 0,-60 A 24,24 0 1,0 0,-100 Z" fill="url(#goldGrad)" />
+    <polygon points="12,-80 16,-68 28,-68 18,-60 22,-48 12,-56 2,-48 6,-60 -4,-68 8,-68" fill="url(#goldGrad)" transform="scale(0.55) translate(4, -130)" />
+
+    <!-- Mihrab / Dome Arch Outline -->
+    <path d="M -80,50 L -80,-10 Q -80,-70 0,-90 Q 80,-70 80,-10 L 80,50 Z" fill="none" stroke="#a7f3d0" stroke-width="3" stroke-opacity="0.4" />
+
+    <!-- Open Book / Quran -->
+    <!-- Left Page -->
+    <path d="M -8,5 Q -55,-5 -100,8 Q -105,48 -100,85 Q -55,75 -8,85 Z" fill="#ffffff" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.3))" />
+    <path d="M -15,18 Q -55,10 -90,20 M -15,35 Q -55,27 -90,37 M -15,52 Q -55,44 -90,54 M -15,69 Q -55,61 -90,71" stroke="#065f46" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.75" />
+
+    <!-- Right Page -->
+    <path d="M 8,5 Q 55,-5 100,8 Q 105,48 100,85 Q 55,75 8,85 Z" fill="#ffffff" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.3))" />
+    <path d="M 15,18 Q 55,10 90,20 M 15,35 Q 55,27 90,37 M 15,52 Q 55,44 90,54 M 15,69 Q 55,61 90,71" stroke="#065f46" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.75" />
+
+    <!-- Spine / Center of book -->
+    <path d="M 0,0 L 0,92" stroke="url(#goldGrad)" stroke-width="4.5" stroke-linecap="round" />
+    <!-- Stand (Rihal) -->
+    <path d="M -70,95 L 70,125 M 70,95 L -70,125" stroke="url(#goldGrad)" stroke-width="4" stroke-linecap="round" />
+  </g>
+
+  <!-- Typography: Kulliyyat Taṭbīq -->
+  <text x="256" y="415" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="800" fill="#ffffff" letter-spacing="1.5">
+    KULLIYYAT TAṬBĪQ
+  </text>
+  <text x="256" y="450" text-anchor="middle" font-family="'Amiri', 'Traditional Arabic', serif" font-size="24" font-weight="700" fill="#fbbf24" dir="rtl">
+    كلية تطبيق التعاليم الإسلامية
+  </text>
+</svg>

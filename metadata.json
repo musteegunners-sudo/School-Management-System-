@@ -1,0 +1,6 @@
+{
+  "name": "Kulliyyat Taṭbīq at-Taʿālīm al-Islāmiyyah",
+  "description": "Kulliyyat Taṭbīq at-Taʿālīm al-Islāmiyyah (College for Practising Islamic Teachings) - Academic grading, rankings, attendance, student registration, and terminal report card system. Developed by Mustapha Danmari.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
